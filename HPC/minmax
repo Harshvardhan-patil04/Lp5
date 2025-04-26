@@ -1,0 +1,72 @@
+//min_max
+#include<stdio.h>
+#include<iostream>
+#include<omp.h>
+using namespace std;
+void min_reduction(int *arr,int n)
+{
+    int min_value=INT_MAX;
+    #pragma omp parallel for reduction(min:min_value);
+    for(int i=0;i<n;i++)
+    {
+        if(arr[i]<min_value)
+        {
+            min_value=arr[i];
+        }
+    }
+    cout<<"MIN VALUE"<<min_value<<endl;
+}
+void max_reduction(int *arr,int n)
+{
+    int max_value=INT_MIN;
+    #pragma omp parallel for reduction(max:max_value);
+    for(int i=0;i<n;i++)
+    {
+        if(arr[i]>max_value)
+        {
+            max_value=arr[i];
+        }
+    }
+    cout<<"MIN VALUE"<<max_value<<endl;
+}
+void sum_reduction(int *arr,int n)
+{
+    int sum=0;
+    #pragma omp parallel for reduction(+:sum);
+    for(int i=0;i<n;i++)
+    {
+        sum=sum+i;
+    }
+    cout<<"Sum"<<sum<<endl;
+}
+
+void average_reduction(int *arr,int n)
+{
+    int sum=0;
+    #pragma omp parallel for reduction(+:sum);
+    for(int i=0;i<n;i++)
+    {
+        sum=sum+i;
+    }
+    cout<<"Avegera"<<(double)sum/n<<endl;
+}
+
+int main()
+{
+    int *arr,n;
+    cout<<"ENTER THE ELEMENTS";
+    cin>>n;
+    arr =new int[n];
+    cout<<"ENTER THE ARRA";
+    for(int i=0;i<n;i++)
+    {
+        cin>>arr[i];
+    }
+
+    min_reduction(arr,n);
+    max_reduction(arr,n);
+    sum_reduction(arr,n);
+    average_reduction(arr,n);
+    delete [] arr;
+    return 0;
+}
